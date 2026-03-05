@@ -33,9 +33,7 @@ public class VentanaPromedio extends JFrame implements ActionListener{
 	private JTextField textNota2;
 	private JTextField textNota3;
 	private JButton btnCalcular;
-	private JButton btnLimpiar;
-	private JTextArea textArea;
-	private JScrollPane scrollPane;
+	private JButton btnLimpiar;	
 	private JButton btnLista;
 	private JButton btnConsulta;
 	private JLabel etiId;
@@ -44,12 +42,14 @@ public class VentanaPromedio extends JFrame implements ActionListener{
 	private JButton btnActualizar;
 	private Procesos procesos;
 	private ModeloDatos modeloDatos;
+	private VentanaLista ventana;
 	
 	public VentanaPromedio() {
-		this.procesos = new Procesos(); //    <-------
-		this.modeloDatos = new ModeloDatos();  //   <-----
+		this.procesos = new Procesos();
+		this.modeloDatos = new ModeloDatos();
+		this.ventana = new VentanaLista(null);
 		setTitle("Promedio de estudiantes");
-		setSize(659,572);
+		setSize(659,366);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
@@ -166,16 +166,7 @@ public class VentanaPromedio extends JFrame implements ActionListener{
 		btnLista.setBackground(Color.gray);
 		btnLista.setBounds(325,220,85,21);
 		add(btnLista);
-		btnLista.addActionListener(this);
-		
-		textArea = new JTextArea();
-		textArea.setBounds(45,250,559,272);
-		add(textArea);		
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(45,250,559,272);
-		scrollPane.setViewportView(textArea);
-		add(scrollPane);
+		btnLista.addActionListener(this);		
 		
 		etiId = new JLabel();
 		etiId.setText("I.D.: ");
@@ -270,7 +261,8 @@ public class VentanaPromedio extends JFrame implements ActionListener{
 	
 	private void consultarLista() {
 		String listaConsultada = modeloDatos.imprimirListaEstudiantes();
-		textArea.setText(listaConsultada);
+		ventana.setVisible(true);
+		ventana.imprimir(listaConsultada);
 	}
 	
 	private void consulta() {
@@ -296,7 +288,8 @@ public class VentanaPromedio extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, mensaje, "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
 		} else {
 			limpiar();
-			textArea.setText(mensaje);
+			ventana.setVisible(true);
+			ventana.imprimir(mensaje);
 		}
 	}
 	
@@ -321,7 +314,8 @@ public class VentanaPromedio extends JFrame implements ActionListener{
 				}
 				String registro = modeloDatos.actualizarEstudiante(estudianteEncontrado);
 				limpiar();
-				textArea.setText(registro);
+				ventana.setVisible(true);
+				ventana.imprimir(registro);
 				if(registro.equals("NO se pudo hacer la actualización.")) {
 					JOptionPane.showMessageDialog(null, registro, "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
 				}
